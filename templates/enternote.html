@@ -1,12 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}  <!-- Jinja syntax -->
 
 {% block body %}
 <div style="text-align: center; vertical-align: middle">
-    <form method="POST">
+    <form id="note" method="POST">
         <h1>Enter your new note</h1>
-        <textarea id="note" type="text" name="note"></textarea>
-        <input type="submit" name="note" value="SAVE">
+
+        <input type="radio" id="favorite" name="favorite" value="FAVORITE">
+        <label for="favorite">Make it your Favorite</label>
+        <br>
+
+        <input type="radio" id="not-favorite" name="not-favorite" value="NOT_FAVORITE">
+        <label for="NOT_FAVORITE">Not your favorite</label>
+        <br>
+
+        <input type="submit" name="note">
     </form>
+    <textarea id="note" type="text" name="enternote" form="note"></textarea>
 
 </div>
 
