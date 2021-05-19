@@ -4,6 +4,13 @@
 {% endblock %}
 
 {% block body %}
-<a href="{{ url_for('enternote') }}">Enter note</a>
+<a href="{{ url_for('enternote') }}">
+    <button id="enternote">Enter a note</button>
+</a>
+<br>
+<a href=" {{ url_for('shownotes') }}">
+    <button id="shownotes">Show the notes list</button>
+</a>
+
 {% endblock %}
 

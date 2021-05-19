@@ -5,17 +5,11 @@
     <form id="note" method="POST">
         <h1>Enter your new note</h1>
 
-        <input type="radio" id="favorite" name="favorite" value="FAVORITE">
-        <label for="favorite">Make it your Favorite</label>
-        <br>
-
-        <input type="radio" id="not-favorite" name="not-favorite" value="NOT_FAVORITE">
-        <label for="NOT_FAVORITE">Not your favorite</label>
-        <br>
+        <input id="title" name="title" placeholder="Enter the title">
 
         <input type="submit" name="note">
     </form>
-    <textarea id="note" type="text" name="enternote" form="note"></textarea>
+    <textarea id="note" type="text" name="enternote" form="note" maxlength="2000"></textarea>
 
 </div>
 
