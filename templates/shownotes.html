@@ -6,8 +6,15 @@
         <tr>
             <td>Date</td>
             <td>Title</td>
-            <td>Favorite</td>
         </tr>
     </thead>
+    <tbody>
+        {% for row in table %}
+        <tr>
+            <td>{{row.date}}</td>
+            <td>{{row.title}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}

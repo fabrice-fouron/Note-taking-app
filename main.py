@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # The unique of each note stored in the database
-    date = db.Column(db.DateTime, default=datetime.datetime.utcnow())  # The time the note was created or modified
+    date = db.Column(db.DateTime, default=datetime.datetime.today())  # The time the note was created or modified
     title = db.Column(db.String(50), nullable=False)  # the title of the note
 
 
@@ -34,17 +34,19 @@ def enternote():
 
 @app.route("/shownotes")
 def shownotes():
-    return render_template('shownotes.html')
+    table = Notes.query.order_by(Notes.date).all()
+    return render_template('shownotes.html', table=table)
 
 
 @app.route("/display")
-def display():
+def display():  # Display the note
     return render_template('display.html')
 
-@app.route('/update')
-def update_note(title):
-    # newFile =  # Going to create a new file to replace the previous one
-    f = open(f"./notes/{title}.txt", "w")
+@app.route('/edit')
+def edit_note(title):
+    newFile = open(os.path.join("./notes/", f"{title}.txt"), "w")# Going to create a new file to replace the previous one
+    f = open(f"./notes/{title}.txt", "r")
+    newFile.write(f.read())
 
 
 def save_note(title, text):  # Save the notes in the notes folder and in the database
@@ -54,9 +56,9 @@ def save_note(title, text):  # Save the notes in the notes folder and in the dat
     db.session.add(note)
     
 
-def delete_note(title):  # Remove the note from the database and from the notes folder
-    db.session.delete(Notes.query.filter_by(username='peter'))
-    os.remove(f"./notes/{title}.txt")
+def delete_note(titled):  # Remove the note from the database and from the notes folder
+    # db.session.delete(Notes.query.filter_by(title=titled))
+    os.remove(f"./notes/{titled}.txt")
 
 
 if __name__ == "__main__":
