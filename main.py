@@ -1,3 +1,4 @@
+from enum import unique
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 import datetime
@@ -12,7 +13,7 @@ db = SQLAlchemy(app)
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # The unique of each note stored in the database
     date = db.Column(db.DateTime, default=datetime.datetime.today())  # The time the note was created or modified
-    title = db.Column(db.String(50), nullable=False)  # the title of the note
+    title = db.Column(db.String(50), nullable=False, unique=True)  # the title of the note
 
 
 @app.route("/")  # Decorator to show the route of the page to render in the browser
@@ -32,7 +33,7 @@ def enternote():
         return redirect("/")  # Redirect to the main page
 
 
-@app.route("/shownotes")
+@app.route("/shownotes", methods=["GET", "POST"])
 def shownotes():
     table = Notes.query.order_by(Notes.date).all()
     return render_template('shownotes.html', table=table)
@@ -42,11 +43,15 @@ def shownotes():
 def display():  # Display the note
     return render_template('display.html')
 
-@app.route('/edit')
-def edit_note(title):
-    newFile = open(os.path.join("./notes/", f"{title}.txt"), "w")# Going to create a new file to replace the previous one
-    f = open(f"./notes/{title}.txt", "r")
-    newFile.write(f.read())
+@app.route('/edit/<string:name>', methods=["POST", "GET"])
+def edit_note(name):
+    newFile = open(os.path.join("./notes/", f"{name}A.txt"), "w")# Going to create a new file to replace the previous one
+    with open(f"./notes/{name}.txt", "r") as f:
+        newFile.write(f.read())
+    os.remove(f"./notes/{name}.txt")  # Make sure to keep both names different to avoid conflict and then rename later to the original name
+    os.rename(f"./notes/{name}A.txt", f"./notes/{name}.txt")
+    newFile = open(f"./notes/{name}.txt", "r")
+    return render_template("edit.html", text=newFile.read())
 
 
 def save_note(title, text):  # Save the notes in the notes folder and in the database
@@ -55,10 +60,13 @@ def save_note(title, text):  # Save the notes in the notes folder and in the dat
     note = Notes(title=request.form['title'])
     db.session.add(note)
     
-
-def delete_note(titled):  # Remove the note from the database and from the notes folder
-    # db.session.delete(Notes.query.filter_by(title=titled))
-    os.remove(f"./notes/{titled}.txt")
+@app.route('/delete/<string:name>', methods=["POST"])
+def delete_note(name):  # Remove the note from the database and from the notes folder
+    note = Notes.query.filter_by(title=name).first()
+    db.session.delete(note)
+    db.session.commit()
+    os.remove(f"./notes/{name}.txt")
+    return redirect("/shownotes")
 
 
 if __name__ == "__main__":
