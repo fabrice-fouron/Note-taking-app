@@ -1,9 +1,9 @@
-{extends 'base.html'}
-
-{% block head %} {% endblock %}
+{% extends 'base.html' %}
 
 {% block body %} 
-<form>
-    <textarea> {{ text }} </textarea>
+<form method="POST" id="editform">
+    <h1>Edit</h1>
+    <input type="submit" name="edit">SAVE</button>
 </form> 
+<textarea type="text" name="edit-text" form="editform"> {{ text }} </textarea>
 {% endblock %}

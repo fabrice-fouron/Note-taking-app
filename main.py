@@ -4,10 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 import datetime
 import os
 
-app = Flask(__name__)
+app = Flask(__name__)  # The app/server running
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
+db = SQLAlchemy(app)  # The database
 
 
 class Notes(db.Model):
@@ -23,6 +23,7 @@ def index():
 
 @app.route("/enternote", methods=['GET', 'POST'])
 def enternote():
+    '''View to enter the note and save it'''
     if request.method == "GET":  # Simply open the page
         return render_template('enternote.html')
     else:  # If the action is to post, do the following
@@ -35,38 +36,69 @@ def enternote():
 
 @app.route("/shownotes", methods=["GET", "POST"])
 def shownotes():
+    '''View to display the table of notes'''
     table = Notes.query.order_by(Notes.date).all()
     return render_template('shownotes.html', table=table)
 
 
 @app.route("/display")
 def display():  # Display the note
+    '''Display the note'''
     return render_template('display.html')
 
-@app.route('/edit/<string:name>', methods=["POST", "GET"])
+@app.route('/edit/<string:name>', methods=["GET", "POST"])
 def edit_note(name):
-    newFile = open(os.path.join("./notes/", f"{name}A.txt"), "w")# Going to create a new file to replace the previous one
+    '''View to edit the note'''
     with open(f"./notes/{name}.txt", "r") as f:
-        newFile.write(f.read())
-    os.remove(f"./notes/{name}.txt")  # Make sure to keep both names different to avoid conflict and then rename later to the original name
-    os.rename(f"./notes/{name}A.txt", f"./notes/{name}.txt")
-    newFile = open(f"./notes/{name}.txt", "r")
-    return render_template("edit.html", text=newFile.read())
+        data = f.read()
 
+    if request.method == "POST":
+        with open(f"./notes/{name}.txt", "w") as f:
+            note = request.form['edit-text']
+            f.write(note)
+            return redirect("/")
 
-def save_note(title, text):  # Save the notes in the notes folder and in the database
-    f = open(os.path.join("./notes/", f"{title}.txt"), "w")
-    f.write(text)
-    note = Notes(title=request.form['title'])
-    db.session.add(note)
+    with open(f"./notes/{name}.txt", "r") as f:
+        return render_template("edit.html", text=data)
+
     
 @app.route('/delete/<string:name>', methods=["POST"])
 def delete_note(name):  # Remove the note from the database and from the notes folder
+    '''Remove the note from the database and from the folder'''
     note = Notes.query.filter_by(title=name).first()
     db.session.delete(note)
     db.session.commit()
     os.remove(f"./notes/{name}.txt")
     return redirect("/shownotes")
+
+
+def save_note(title, text):  # Save the notes in the notes folder and in the database
+    '''Save the notes into the databse and in the folder'''
+    f = open(os.path.join("./notes/", f"{title}.txt"), "w")
+    f.write(text)
+    note = Notes(title=request.form['title'])
+    db.session.add(note)
+
+
+@app.route('/rename/<string:name>', methods=["GET", "POST"])
+def rename_note(name):
+    '''Changethe name of the note from the original name to after'''
+    if request.method == "POST":
+        # Change the file name
+        new = request.form['new-name']
+        os.rename(f"./notes/{name}.txt", f"./notes/{new}.txt")
+
+        # Change the name in the database
+        note = Notes.query.filter_by(title=name).first()
+        note.title = new
+        note.date = datetime.datetime.today()
+        db.session.commit()
+
+        # Redirect to the table page
+        return redirect("/shownotes")
+
+
+    return render_template('rename.html')
 
 
 if __name__ == "__main__":
