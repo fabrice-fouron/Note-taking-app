@@ -1,5 +1,11 @@
+@charset "UTF-8";
+
 body {
-    background-color: #ff8000;
+    background-color: #ff8000e5;
+}
+
+table {
+    border: solid 10px;
 }
 
 #enternote {
@@ -24,6 +30,14 @@ textarea {
     margin-top: 50px;
 }
 
-button {
-    
+#enter-note {
+    margin-right: 20px;
+}
+
+#shownotes {
+    margin-left: 20px;
+}
+
+#main-buttons {
+    font-size: 35px;
 }

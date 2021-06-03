@@ -4,13 +4,13 @@
 {% endblock %}
 
 {% block body %}
+<div id="main-buttons">
 <a href="{{ url_for('enternote') }}">
-    <button id="enternote">Enter a note</button>
+    <button id="enter-note">Enter a note</button>
 </a>
-<br>
 <a href=" {{ url_for('shownotes') }}">
     <button id="shownotes">Show the notes list</button>
 </a>
-
+</div>
 {% endblock %}
 
