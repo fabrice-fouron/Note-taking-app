@@ -1,29 +1,28 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<table class="w3-table w3-bordered" align="center">
+<table align="center">
     <thead style="border: 10px;">
         <tr>
             <td>Date</td>
             <td>Title</td>
+            <td>Edit/Delete/Rename</td>
         </tr>
     </thead>
     <tbody>
         {% for row in table %}
             <tr>
-                <td>{{row.title}}</td>
-                <td>
+                <td>{{ row.date }}</td>
+                <td>{{ row.title }}</td>
+                <td id="buttons">
                     <a href="{{ url_for('edit_note', name=row.title) }}">
                         <button type="submit" name="edit">Edit</button>
                     </a>
-                </td>
-                <td>
-                    <a>
+
+                    <a href="{{ url_for('delete_note', name=row.title) }}">
                         <button type="submit" name="delete">Delete</button>
                     </a>
-                </td>
 
-                <td>
                     <a href="{{ url_for('rename_note', name=row.title) }}">
                         <button type="submit" name="rename">Rename</button>
                     </a>

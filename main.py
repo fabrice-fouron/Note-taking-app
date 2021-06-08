@@ -12,7 +12,7 @@ db = SQLAlchemy(app)  # The database
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # The unique of each note stored in the database
-    date = db.Column(db.DateTime, default=datetime.datetime.today())  # The time the note was created or modified
+    date = db.Column(db.DateTime, default=datetime.datetime.today().strftime("%a %B %d, %Y"))  # The time the note was created or modified
     title = db.Column(db.String(50), nullable=False, unique=True)  # the title of the note
 
 
@@ -62,7 +62,7 @@ def edit_note(name):
         return render_template("edit.html", text=data)
 
     
-@app.route('/delete/<string:name>', methods=["POST"])
+@app.route('/delete/<string:name>', methods=["GET", "POST"])
 def delete_note(name):  # Remove the note from the database and from the notes folder
     '''Remove the note from the database and from the folder'''
     note = Notes.query.filter_by(title=name).first()
@@ -91,7 +91,7 @@ def rename_note(name):
         # Change the name in the database
         note = Notes.query.filter_by(title=name).first()
         note.title = new
-        note.date = datetime.datetime.today()
+        note.date = datetime.datetime.today().strftime("%a %B %d, %Y")
         db.session.commit()
 
         # Redirect to the table page

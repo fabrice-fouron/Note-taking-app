@@ -4,10 +4,7 @@ body {
     background-color: #ff8000e5;
 }
 
-table {
-    border: solid 10px;
-}
-
+/* Main Page */
 #enternote {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin-top: 50px;
@@ -15,6 +12,57 @@ table {
     margin-right: 30px;
     border: solid 10px;
 }
+
+
+.welcome {
+    font-weight: bold;
+    font-family: cursive;
+}
+
+#container {
+    margin-top: 20%;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: cornsilk;
+}
+
+a #enter-note {
+    margin-right: 20px;
+}
+
+#enter-note {
+    color: white;
+    background-color: black;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+a #shownotes {
+    margin-left: 20px;
+}
+
+#shownotes {
+    color: white;
+    background-color: black;
+    font-size: 25px;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+#buttons {
+    padding-left: 35px;
+}
+
+#buttons button:hover {
+    color: #ff8000e5;
+    background-color: black
+}
+
+
+/* Enter Note Page */
 
 input {
     font-size: 25px;
@@ -26,18 +74,40 @@ textarea {
     outline: none;
 }
 
-.header {
-    margin-top: 50px;
+
+/* Show notes page */
+table {
+    background-color: cornsilk;
+    /* padding: 10px; */
+    width: 100%;
 }
 
-#enter-note {
-    margin-right: 20px;
+table, th, td {
+    border: 1px solid black;
+  }
+
+thead td {
+    font-size: 25px;
+    font-weight: bold;
+    padding: 10px;
 }
 
-#shownotes {
-    margin-left: 20px;
+td {
+    border: solid 2px;
+    font-size: 20px;
 }
 
-#main-buttons {
-    font-size: 35px;
+a {
+    text-decoration: none;
+}
+
+button {
+    border-radius: 10px;
+    padding: 5px 10px;
+    font-size: 30px;
+    margin: 0px 20px;
+}
+
+#buttons {
+    align-content: center;
 }

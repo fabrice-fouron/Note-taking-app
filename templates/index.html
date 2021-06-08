@@ -4,13 +4,16 @@
 {% endblock %}
 
 {% block body %}
-<div id="main-buttons">
-<a href="{{ url_for('enternote') }}">
-    <button id="enter-note">Enter a note</button>
-</a>
-<a href=" {{ url_for('shownotes') }}">
-    <button id="shownotes">Show the notes list</button>
-</a>
+
+
+<div id="container">
+    <h1 align="center" class="welcome">Note Taking App</h1>
+    
+    <div id="buttons">
+        <a href="{{ url_for('enternote') }}"><button id="enter-note">Enter a note</button></a>
+        <a href=" {{ url_for('shownotes') }}"><button id="shownotes">Show the notes list</button></a>
+    </div>
+    
 </div>
 {% endblock %}
 
