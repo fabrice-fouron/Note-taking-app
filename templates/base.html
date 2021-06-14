@@ -11,7 +11,11 @@
 <body>
     {% block body %}
     <h1 style="text-align:center">Note-Taking App</h1>
+
     {% endblock %}
+    <a href="{{ url_for('index') }}" >
+        <button type="submit" style="position: absolute; bottom: 10%; right: 10%; ">Home</button>
+    </a>
 </body>
 
 </html>

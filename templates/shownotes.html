@@ -5,6 +5,7 @@
     <thead style="border: 10px;">
         <tr>
             <td>Date</td>
+            <td>Time</td>
             <td>Title</td>
             <td>Edit/Delete/Rename</td>
         </tr>
@@ -12,7 +13,8 @@
     <tbody>
         {% for row in table %}
             <tr>
-                <td>{{ row.date }}</td>
+                <td>{{ row.date.strftime("%a %B %d, %Y") }}</td> <!-- Format the way the date is displayed -->
+                <td>{{ row.time.strftime("%H:%M:%S") }}</td>
                 <td>{{ row.title }}</td>
                 <td id="buttons">
                     <a href="{{ url_for('edit_note', name=row.title) }}">
@@ -25,6 +27,10 @@
 
                     <a href="{{ url_for('rename_note', name=row.title) }}">
                         <button type="submit" name="rename">Rename</button>
+                    </a>
+
+                    <a href="{{ url_for('display', name=row.title) }}">
+                        <button type="submit" name="display">Display</button>
                     </a>
                 </td>
             </tr>

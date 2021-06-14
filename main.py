@@ -12,7 +12,8 @@ db = SQLAlchemy(app)  # The database
 
 class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # The unique of each note stored in the database
-    date = db.Column(db.DateTime, default=datetime.datetime.today().strftime("%a %B %d, %Y"))  # The time the note was created or modified
+    date = db.Column(db.DateTime, default=datetime.datetime.today())  # The time the note was created or modified
+    time = db.Column(db.DateTime, default=datetime.datetime.now())
     title = db.Column(db.String(50), nullable=False, unique=True)  # the title of the note
 
 
@@ -41,10 +42,15 @@ def shownotes():
     return render_template('shownotes.html', table=table)
 
 
-@app.route("/display")
-def display():  # Display the note
+@app.route('/display/<string:name>', methods=["GET", "POST"])
+def display(name):  # Display the note
     '''Display the note'''
-    return render_template('display.html')
+    with open(f"./notes/{name}.txt", "r") as f:
+        data = f.read()
+
+    if request.method == "POST":
+        return redirect("/")
+    return render_template('display.html', text=data)
 
 @app.route('/edit/<string:name>', methods=["GET", "POST"])
 def edit_note(name):
@@ -56,6 +62,10 @@ def edit_note(name):
         with open(f"./notes/{name}.txt", "w") as f:
             note = request.form['edit-text']
             f.write(note)
+            obj = Notes.query.filter_by(title=name)
+            obj.date = datetime.datetime.today()
+            obj.time = datetime.datetime.now()
+            db.session.commit()
             return redirect("/")
 
     with open(f"./notes/{name}.txt", "r") as f:
@@ -91,7 +101,8 @@ def rename_note(name):
         # Change the name in the database
         note = Notes.query.filter_by(title=name).first()
         note.title = new
-        note.date = datetime.datetime.today().strftime("%a %B %d, %Y")
+        note.date = datetime.datetime.today()
+        note.time = datetime.datetime.now()
         db.session.commit()
 
         # Redirect to the table page
