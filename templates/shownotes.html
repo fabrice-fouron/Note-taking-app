@@ -15,7 +15,7 @@
             <tr>
                 <td>{{ row.date.strftime("%a %B %d, %Y") }}</td> <!-- Format the way the date is displayed -->
                 <td>{{ row.time.strftime("%H:%M:%S") }}</td>
-                <td>{{ row.title }}</td>
+                <td>{{ noUnderscore(row.title) }}</td>
                 <td id="buttons">
                     <a href="{{ url_for('edit_note', name=row.title) }}">
                         <button type="submit" name="edit">Edit</button>
