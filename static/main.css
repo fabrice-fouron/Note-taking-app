@@ -56,7 +56,7 @@ a #shownotes {
     padding-left: 35px;
 }
 
-#buttons button:hover {
+button:hover {
     color: #ff8000e5;
     background-color: black
 }

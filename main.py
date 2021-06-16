@@ -62,11 +62,11 @@ def edit_note(name):
         with open(f"./notes/{underscore(name)}.txt", "w") as f:
             note = request.form['edit-text']
             f.write(note)
-            obj = Notes.query.filter_by(title=underscore(name))
+            obj = Notes.query.filter_by(title=no_underscore(name)).first()
             obj.date = datetime.datetime.today()
             obj.time = datetime.datetime.now()
             db.session.commit()
-            return redirect("/")
+            return redirect("/shownotes")
 
     with open(f"./notes/{underscore(name)}.txt", "r") as f:
         return render_template("edit.html", text=data)
@@ -92,14 +92,14 @@ def save_note(title, text):  # Save the notes in the notes folder and in the dat
 
 @app.route('/rename/<string:name>', methods=["GET", "POST"])
 def rename_note(name):
-    '''Changethe name of the note from the original name to after'''
+    '''Change the name of the note from the original name to after'''
     if request.method == "POST":
         # Change the file name
         new = request.form['new-name']
         os.rename(f"./notes/{underscore(name)}.txt", f"./notes/{underscore(new)}.txt")
 
         # Change the name in the database
-        note = Notes.query.filter_by(title=underscore(name)).first()
+        note = Notes.query.filter_by(title=no_underscore(name)).first()
         note.title = new
         note.date = datetime.datetime.today()
         note.time = datetime.datetime.now()
