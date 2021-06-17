@@ -122,4 +122,4 @@ def no_underscore(name):  # Replace the underscore in the filename to a space
   return name
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
